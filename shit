@@ -1,0 +1,272 @@
+//
+//  ReimannSum.m
+//  App Proj
+//
+//  Created by Noah Eisen on 1/17/14.
+//  Copyright (c) 2014 Noah Eisen. All rights reserved.
+//
+
+#import "ReimannSum.h"
+
+@implementation ReimannSum {
+    double sum;
+    double old_y;
+}
+
+- (void) updateX: (double)x_cord Y:(double)y_cord {
+    sum = sum + (x_cord * (y_cord - old_y));
+    old_y = y_cord;
+}
+
+- (double) returnSum {
+    return sum;
+}
+
+@end
+
+
+/////////////////////////////////////////////////////////
+
+
+//
+//  ReimannSum.h
+//  App Proj
+//
+//  Created by Noah Eisen on 1/17/14.
+//  Copyright (c) 2014 Noah Eisen. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface ReimannSum : NSObject
+
+- (void)updateX: (double)x_cord Y:(double)y_cord;
+- (double)returnSum;
+
+@end
+
+
+/////////////////////////////////////////////////////////
+
+
+//
+//  getCord.m
+//  App Proj
+//
+//  Created by Noah Eisen on 1/18/14.
+//  Copyright (c) 2014 Noah Eisen. All rights reserved.
+//
+
+#import "getCord.h"
+
+@implementation getCord {
+    double x1, y1;
+}
+
+/*
+-(id) init:(double)theX AndtheY:(double)theY
+{
+    if (self = [super init]){
+        x1 = theX;
+        y1 = theY;
+    }
+    return self;
+}
+*/
+
+- (void)setX: (double)x_in Y:(double)y_in {
+    x1 = x_in;
+    y1 = y_in;
+}
+
+/* calculates x
+- (double)calcX: (double)inX{
+    double R = 6371000;
+    double d = (inX - x1)*(M_PI/180) * cos((y1+y1)*(M_PI/90));
+    d = sqrt(d)*R;
+    return d;
+}
+
+// calculate y
+- (double)calcY: (double)inY{
+    double R = 6371000;
+    double d = (inY - y1)*(M_PI/180);
+    d = sqrt(d)*R;
+    return d;
+}
+ */
+
+- (double)calcX: (double)inX {
+    return (inX - x1) * 111131.75;
+}
+
+- (double)calcY: (double)inY {
+    return (inY - y1) * 111131.75;
+}
+
+@end
+
+
+
+/////////////////////////////////////////////////////////
+
+
+//
+//  getCord.h
+//  App Proj
+//
+//  Created by Noah Eisen on 1/18/14.
+//  Copyright (c) 2014 Noah Eisen. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface getCord : NSObject
+
+- (double)calcX: (double)inX;
+- (double)calcY: (double)inY;
+- (void)setX: (double)x_in Y: (double)y_in;
+
+@end
+
+
+
+/////////////////////////////////////////////////////////
+
+
+//
+//  main.m
+//  App Proj
+//
+//  Created by Noah Eisen on 1/17/14.
+//  Copyright (c) 2014 Noah Eisen. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "ReimannSum.h"
+#import "getCord.h"
+
+int main(int argc, const char * argv[])
+{
+
+    @autoreleasepool {
+        
+        ReimannSum *sum = [[ReimannSum alloc] init];
+        [sum updateX:1 Y:0];
+        [sum updateX:2 Y:0];
+        [sum updateX:3 Y:0];
+        [sum updateX:3 Y:1];
+        [sum updateX:3 Y:2];
+        [sum updateX:3 Y:3];
+        [sum updateX:3 Y:3];
+        [sum updateX:2 Y:3];
+        [sum updateX:1 Y:3];
+        [sum updateX:0 Y:2];
+        [sum updateX:0 Y:1];
+        [sum updateX:0 Y:0];
+        
+        ReimannSum *sum2 = [[ReimannSum alloc] init];
+        [sum2 updateX:2.12 Y:1.18];
+        [sum2 updateX:4 Y:4];
+        [sum2 updateX:2.12 Y:6.86];
+        [sum2 updateX:0 Y:8];
+        [sum2 updateX:-2.12 Y:6.86];
+        [sum2 updateX:-4 Y:4];
+        [sum2 updateX:-2.12 Y:1.18];
+        [sum2 updateX:0 Y:0];
+        
+        
+        ReimannSum *sum3 = [[ReimannSum alloc] init];
+        [sum3 updateX:1.54 Y:.3];
+        [sum3 updateX:2.12 Y:1.18];
+        [sum3 updateX:3.8 Y:2.7];
+        [sum3 updateX:4 Y:4];
+        [sum3 updateX:3.7 Y:5.5];
+        [sum3 updateX:2.12 Y:6.86];
+        [sum3 updateX:1.6 Y:7.6];
+        [sum3 updateX:0 Y:8];
+        [sum3 updateX:-1.6 Y:7.6];
+        [sum3 updateX:-2.12 Y:6.86];
+        [sum3 updateX:-3.7 Y:5.5];
+        [sum3 updateX:-4 Y:4];
+        [sum3 updateX:-3.8 Y:2.7];
+        [sum3 updateX:-2.12 Y:1.18];
+        [sum3 updateX:-1.54 Y:.3];
+        [sum3 updateX:0 Y:0];
+        
+        getCord *cord = [[getCord alloc] init];
+        [cord setX:42.273308 Y:-83.740638];
+        ReimannSum *sum4 = [[ReimannSum alloc] init];
+        [sum4 updateX:[cord calcX:42.273332] Y:[cord calcY:-83.74008]];
+        [sum4 updateX:[cord calcX:42.273308] Y:[cord calcY:-83.739479]];
+        [sum4 updateX:[cord calcX:42.27334] Y:[cord calcY:-83.738921]];
+        [sum4 updateX:[cord calcX:42.273332] Y:[cord calcY:-83.738235]];
+        [sum4 updateX:[cord calcX:42.273752] Y:[cord calcY:-83.738267]];
+        [sum4 updateX:[cord calcX:42.274133] Y:[cord calcY:-83.738224]];
+        [sum4 updateX:[cord calcX:42.274618] Y:[cord calcY:-83.738256]];
+        [sum4 updateX:[cord calcX:42.274943] Y:[cord calcY:-83.738277]];
+        [sum4 updateX:[cord calcX:42.274951] Y:[cord calcY:-83.739425]];
+        [sum4 updateX:[cord calcX:42.274903] Y:[cord calcY:-83.740123]];
+        [sum4 updateX:[cord calcX:42.274919] Y:[cord calcY:-83.740681]];
+        [sum4 updateX:[cord calcX:42.274554] Y:[cord calcY:-83.740681]];
+        [sum4 updateX:[cord calcX:42.274221] Y:[cord calcY:-83.740724]];
+        [sum4 updateX:[cord calcX:42.273776] Y:[cord calcY:-83.740659]];
+        [sum4 updateX:[cord calcX:42.273562] Y:[cord calcY:-83.740681]];
+        [sum4 updateX:[cord calcX:42.273308] Y:[cord calcY:-83.740638]];
+        
+        ReimannSum *sum5 = [[ReimannSum alloc] init];
+        [sum5 updateX:42.273332 Y:83.74008];
+        [sum5 updateX:42.273308 Y:83.739479];
+        [sum5 updateX:42.27334 Y:83.738921];
+        [sum5 updateX:42.273332 Y:83.738235];
+        [sum5 updateX:42.273752 Y:83.738267];
+        [sum5 updateX:42.274133 Y:83.738224];
+        [sum5 updateX:42.274618 Y:83.738256];
+        [sum5 updateX:42.274943 Y:83.738277];
+        [sum5 updateX:42.274951 Y:83.739425];
+        [sum5 updateX:42.274903 Y:83.740123];
+        [sum5 updateX:42.274919 Y:83.740681];
+        [sum5 updateX:42.274554 Y:83.740681];
+        [sum5 updateX:42.274221 Y:83.740724];
+        [sum5 updateX:42.273776 Y:83.740659];
+        [sum5 updateX:42.273562 Y:83.740681];
+        [sum5 updateX:42.273308 Y:83.740638];
+        
+        ReimannSum *sum6 = [[ReimannSum alloc] init];
+        [sum6 updateX:.5 Y:0];
+        [sum6 updateX:1 Y:0];
+        [sum6 updateX:1.5 Y:0];
+        [sum6 updateX:2 Y:0];
+        [sum6 updateX:2 Y:.5];
+        [sum6 updateX:2 Y:1];
+        [sum6 updateX:2 Y:1.5];
+        [sum6 updateX:2 Y:2];
+        [sum6 updateX:1.5 Y:2];
+        [sum6 updateX:1 Y:2];
+        [sum6 updateX:.5 Y:2];
+        [sum6 updateX:0 Y:2];
+        [sum6 updateX:0 Y:1.5];
+        [sum6 updateX:0 Y:1];
+        [sum6 updateX:0 Y:.5];
+        [sum6 updateX:0 Y:0];
+        
+        NSLog(@"result: %f", [sum returnSum]);
+        NSLog(@"result: %f", [sum2 returnSum]);
+        NSLog(@"result: %f", [sum3 returnSum]);
+        NSLog(@"result: %f", [sum4 returnSum]);
+        NSLog(@"result: %f", [sum5 returnSum]);
+        NSLog(@"result: %f", [sum6 returnSum]);
+        
+    }
+    return 0;
+}
+
+
+
+
+/////////////////////////////////////////////////////////
+
+
+
+
+
